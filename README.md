@@ -1,9 +1,7 @@
 # проект автоматизации тестирования отдельного функционала учебного сервиса по заказу самокатов https://qa-scooter.praktikum-services.ru/
 1. Проект реализован с помощью фреймвойрка pytest.
 2. Установить зависимости — pip install -r requirements.txt.
-3. ВНИМАНИЕ: в фикстуре conftest.py указан абсолюный путь до браузера Firefox и путь до драйвера geckodriver.
-Сорри, но без этого драйвер не инициализируется.
-4. Тесты сгруппированы в файлы в дирректории tests:
+3. Тесты сгруппированы в файлы в дирректории tests:
 accordion.py
 test_click_on_how_much
 test_click_on_want_some_scooters
@@ -23,10 +21,10 @@ transitions.py
 test_transition_to_main_page_click_logo
 test_transition_to_yandex_page
 
-5.Классы страниц, локаторы, методы для работы с элементами страниц находятся в директории  pages
+4.Классы страниц, локаторы, методы для работы с элементами страниц находятся в директории  pages
 в файлах basepage.py (общие методы), mainpage.py, orderpage.py, yandexpage.py.
 
-6. Команда для запуска pytest -v tests/filename.py --alluredir=allure_results
-7.Отчеты о тестировании находятся в директории allure_results
-8.Просмотр отчетов: allure serve allure_results 
+7. Команда для запуска pytest -v tests/filename.py --alluredir=allure_results
+8.Отчеты о тестировании находятся в директории allure_results
+9.Просмотр отчетов: allure serve allure_results 
 
