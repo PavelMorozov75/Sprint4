@@ -1,13 +1,11 @@
 import pytest
 from selenium import webdriver
-from selenium.webdriver.firefox.options import Options
+from webdriver_manager.firefox import GeckoDriverManager
 
 @pytest.fixture()
 def driver():
     url = 'https://qa-scooter.praktikum-services.ru/'
-    options = Options()
-    options.binary_location = r'C:\Program Files\Mozilla Firefox\firefox.exe'
-    browser_driver = webdriver.Firefox(executable_path='.\geckodriver.exe', options=options)
+    browser_driver = webdriver.Firefox(executable_path=GeckoDriverManager().install())
     browser_driver.get(url)
     yield browser_driver
     browser_driver.quit()
