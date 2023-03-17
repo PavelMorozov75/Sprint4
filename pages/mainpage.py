@@ -24,9 +24,11 @@ class MainPageLocators:
     LIVE_FURTHER_THAN_MKAD_ANSWER = [By.XPATH, "//div[@id= 'accordion__panel-7']/p"]
     BUTTON_ORDER_IN_HEAD = [By.XPATH, "//button[@class='Button_Button__ra12g']"]
     BUTTON_ORDER_IN_FOOTER = [By.XPATH, "//button[@class='Button_Button__ra12g Button_Middle__1CSJM']"]
-
+    COOKIE = [By.XPATH, "//button[@id='rcc-confirm-button']"]
 class MainPageScooter(BasePageScooter):
 
+    question_is_selected = 'true'
+    mainpage_url = 'https://qa-scooter.praktikum-services.ru/'
     answers = {'how_much': 'Сутки — 400 рублей. Оплата курьеру — наличными или картой.',
                'some_scooters': 'Пока что у нас так: один заказ — один самокат. ' \
                                   'Если хотите покататься с друзьями, можете просто сделать несколько заказов' \
@@ -43,77 +45,23 @@ class MainPageScooter(BasePageScooter):
                                   'объяснительной записки тоже не попросим. Все же свои.',
                'further_than_mkad': 'Да, обязательно. Всем самокатов! И Москве, и Московской области.'}
 
-
     def wait_for_load_main_page(self):
-        WebDriverWait(self.driver, 10).until(
-            expected_conditions.visibility_of_element_located((MainPageLocators.LOGO_SCOOTER)))
+        self.wait_for_element_located(*MainPageLocators.LOGO_SCOOTER)
+    def set_element_by_main_page(self, by, locator):
+        element = self.driver.find_element(by, locator)
+        self.scroll_to_element(element)
+        self.wait_for_element_to_be_clickable(by, locator)
+        element.click()
+    def get_answer_from_main_page(self, by, locator):
+        self.wait_for_element_to_be_clickable(by, locator)
+        answer = self.driver.find_element(by, locator)
+        return answer.text
+    def get_attribute_for_question(self, by, locator):
+        question = self.driver.find_element(by, locator)
+        return question.get_attribute('aria-expanded')
 
-    def set_element_how_much_on_main_page(self):
-        self.set_element_by_main_page(*MainPageLocators.HOW_MUCH_QUESTION)
+    def clear_message_about_cookie(self):
+        self.accept_cookie(*MainPageLocators.COOKIE)
 
-    def check_answer_for_how_much(self):
-        self.check_element_by_main_page(*MainPageLocators.HOW_MUCH_QUESTION, *MainPageLocators.HOW_MUCH_ANSWER,
-                                        self.answers['how_much'])
-    def set_element_want_some_scooters_on_main_page(self):
-        self.set_element_by_main_page(*MainPageLocators.WANT_SOME_SCOOTERS_QUESTION)
 
-    def check_answer_for_want_some_scooters(self):
-        self.check_element_by_main_page(*MainPageLocators.WANT_SOME_SCOOTERS_QUESTION,
-                                        *MainPageLocators.WANT_SOME_SCOOTERS_ANSWER, self.answers['some_scooters'])
 
-    def set_element_how_calculate_rental_time_on_main_page(self):
-        self.set_element_by_main_page(*MainPageLocators.HOW_CALCULATE_RENTAL_TIME_QUESTION)
-
-    def check_answer_for_how_calculate_rental_time(self):
-        self.check_element_by_main_page(*MainPageLocators.HOW_CALCULATE_RENTAL_TIME_QUESTION,
-                                        *MainPageLocators.HOW_CALCULATE_RENTAL_TIME_ANSWER,
-                                        self.answers['how_calculate'])
-
-    def set_element_can_i_order_today_on_main_page(self):
-        self.set_element_by_main_page(*MainPageLocators.CAN_ORDER_TODAY_QUESTION)
-
-    def check_answer_for_can_i_order_today(self):
-        self.check_element_by_main_page(*MainPageLocators.CAN_ORDER_TODAY_QUESTION,
-                                        *MainPageLocators.CAN_ORDER_TODAY_ANSWER,
-                                        self.answers['can_order_today'])
-
-    def set_element_can_expand_return_earlier_on_main_page(self):
-        self.set_element_by_main_page(*MainPageLocators.CAN_EXPEND_RETURN_EARLIER_QUESTION)
-
-    def check_answer_for_can_expand_return_earlier(self):
-        self.check_element_by_main_page(*MainPageLocators.CAN_EXPEND_RETURN_EARLIER_QUESTION,
-                                        *MainPageLocators.CAN_EXPEND_RETURN_EARLIER_ANSWER,
-                                        self.answers['can_expend'])
-
-    def set_element_charging_with_a_scooter_on_main_page(self):
-        self.set_element_by_main_page(*MainPageLocators.CHARGING_WITH_A_SCOOTER_QUESTION)
-
-    def check_answer_for_charging_with_a_scooter(self):
-        self.check_element_by_main_page(*MainPageLocators.CHARGING_WITH_A_SCOOTER_QUESTION,
-                                        *MainPageLocators.CHARGING_WITH_A_SCOOTER_ANSWER,
-                                        self.answers['charging_with_a_scooter'])
-
-    def set_element_can_cancel_order_on_main_page(self):
-        self.set_element_by_main_page(*MainPageLocators.CAN_CANCEL_ORDER_QUESTION)
-
-    def check_answer_for_can_cancel_order(self):
-        self.check_element_by_main_page(*MainPageLocators.CAN_CANCEL_ORDER_QUESTION,
-                                        *MainPageLocators.CAN_CANCEL_ORDER_ANSWER,
-                                        self.answers['can_cancel'])
-
-    def set_element_live_further_than_mkad_on_main_page(self):
-        self.set_element_by_main_page(*MainPageLocators.LIVE_FURTHER_THAN_MKAD_QUESTION)
-
-    def check_answer_for_live_further_than_mkad(self):
-        self.check_element_by_main_page(*MainPageLocators.LIVE_FURTHER_THAN_MKAD_QUESTION,
-                                        *MainPageLocators.LIVE_FURTHER_THAN_MKAD_ANSWER,
-                                        self.answers['further_than_mkad'])
-
-    def set_element_button_order_in_head_on_main_page(self):
-        self.set_element_by_main_page(*MainPageLocators.BUTTON_ORDER_IN_HEAD)
-
-    def set_element_button_order_in_footer(self):
-        self.set_element_by_main_page(*MainPageLocators.BUTTON_ORDER_IN_FOOTER)
-
-    def check_transition_to_orderpage(self):
-        assert self.driver.current_url == 'https://qa-scooter.praktikum-services.ru/order'

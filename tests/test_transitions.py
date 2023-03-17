@@ -1,4 +1,5 @@
 import allure
+import pytest
 from pages.orderpage import OrderPage
 from pages.yandexpage import YandexPage
 
@@ -9,8 +10,8 @@ class TestTransitions:
     def test_transition_to_main_page_click_logo(self, driver):
         order_page = OrderPage(driver)
         order_page.go_to_order_page()
-        order_page.set_element_logo_scooter()
-        order_page.check_transition_to_main_page()
+        order_page.set_element_by_main_page(*OrderPage.LOGO_SCOOTER)
+        assert order_page.check_url() == order_page.mainpage_url
 
     @allure.title('Переход на страницу Яндекса')
     @allure.description('Кликаем на надпись Яндекс вверху страницы и переходим на страницу Яндекса')
@@ -20,4 +21,5 @@ class TestTransitions:
         order_page.go_to_order_page()
         order_page.set_element_yandex()
         yandex_page.weit_for_load_yandex_page()
-        yandex_page.chek_transition_to_yandex_page()
+        assert yandex_page.get_count_of_windows() == yandex_page.new_window_is_open
+

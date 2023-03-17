@@ -1,17 +1,19 @@
 from selenium.webdriver.common.by import By
-from pages.mainpage import MainPageScooter
+from pages.mainpage import MainPageScooter, MainPageLocators
 from selenium.webdriver.common.keys import Keys
 
 class OrderPage(MainPageScooter):
 
+    orderpage_url = 'https://qa-scooter.praktikum-services.ru/order'
+
     LOGO_SCOOTER = [By.CLASS_NAME, 'Header_LogoScooter__3lsAR']
     YANDEX = [By.CLASS_NAME, 'Header_LogoYandex__3TSOI']
     HEADER_FOR_WHO = [By.XPATH, "//div[@class='Order_Header__BZXOb']"]
-    NAME = [By.XPATH, "//div[@class='Order_Form__17u6u']/div[1]/input"]
-    SURNAME = [By.XPATH, "//div[@class='Order_Form__17u6u']/div[2]/input"]
-    ADDRESS = [By.XPATH, "//div[@class='Order_Form__17u6u']/div[3]/input"]
+    NAME = [By.XPATH, "//div[@class='Order_Content__bmtHS']/div/div[1]/input"]
+    SURNAME = [By.XPATH, "//div[@class='Order_Content__bmtHS']/div/div[2]/input"]
+    ADDRESS = [By.XPATH, "//div[@class='Order_Content__bmtHS']/div/div[3]/input"]
     METRO = [By.XPATH, "//input[@class='select-search__input']"]
-    PHONE_NUMBER = [By.XPATH, "//div[@class='Order_Form__17u6u']/div[5]/input"]
+    PHONE_NUMBER = [By.XPATH, "//div[@class='Order_Content__bmtHS']/div/div[5]/input"]
     BUTTON_CONTINUE = [By.XPATH, "//button[@class='Button_Button__ra12g Button_Middle__1CSJM']"]
 
     HEADER_ABOUT_RENT = [By.XPATH, "//div[@class='Order_Header__BZXOb']"]
@@ -30,9 +32,9 @@ class OrderPage(MainPageScooter):
     CONFIRMATION_BUTTON = [By.XPATH, "//div[@class='Order_Modal__YZ-d3']/div[2]/button[2]"]
     ORDER_COMPLITED = [By.XPATH, "//div[@class='Order_ModalHeader__3FDaJ']"]
 
-
     def set_element_by_order_for_who(self, firstname, surname, address, metro, phonenumber):
         self.wait_for_element_located(*self.HEADER_FOR_WHO)
+        self.clear_message_about_cookie()
         self.driver.find_element(*self.NAME).send_keys(firstname)
         self.driver.find_element(*self.SURNAME).send_keys(surname)
         self.driver.find_element(*self.ADDRESS).send_keys(address)
@@ -44,10 +46,6 @@ class OrderPage(MainPageScooter):
         self.driver.find_element(*self.PHONE_NUMBER).send_keys(phonenumber)
         self.wait_for_element_to_be_clickable(*self.BUTTON_CONTINUE)
         self.driver.find_element(*self.BUTTON_CONTINUE).click()
-
-    def check_filling_order_for_who(self):
-        self.wait_for_element_located(*self.HEADER_ABOUT_RENT)
-        assert self.driver.find_element(*self.HEADER_ABOUT_RENT)
 
     def set_element_by_order_about_rent(self, date, rental_periode, color, comment):
         self.driver.find_element(*self.WHEN).clear()
@@ -72,17 +70,15 @@ class OrderPage(MainPageScooter):
         self.wait_for_element_to_be_clickable(*self.CONFIRMATION_BUTTON)
         self.driver.find_element(*self.CONFIRMATION_BUTTON).click()
 
-    def check_order_complited(self):
-        self.wait_for_element_located(*self.ORDER_COMPLITED)
-        assert self.driver.find_element(*self.ORDER_COMPLITED)
-
-    def set_element_logo_scooter(self):
-        self.wait_for_element_located(*self.LOGO_SCOOTER)
-        self.driver.find_element(*self.LOGO_SCOOTER).click()
-
-    def check_transition_to_main_page(self):
-        assert self.driver.current_url == 'https://qa-scooter.praktikum-services.ru/'
-
     def set_element_yandex(self):
         self.set_element_by_main_page(*self.YANDEX)
+
+    def go_to_order_page(self):
+        self.go_to_page(OrderPage.orderpage_url)
+
+    def click_button_by_order_in_head(self):
+        self.set_element_by_main_page(*MainPageLocators.BUTTON_ORDER_IN_HEAD)
+
+    def click_button_by_order_in_footer(self):
+        self.set_element_by_main_page(*MainPageLocators.BUTTON_ORDER_IN_FOOTER)
 
